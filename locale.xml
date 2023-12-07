@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locales>
+
+    <groups name="quiqqer/html-snippets" datatype="php,js">
+        <locale name="package.title">
+            <de><![CDATA[QUIQQER HTML Snippets]]></de>
+            <en><![CDATA[QUIQQER HTML Snippets]]></en>
+        </locale>
+        <locale name="package.description">
+            <de><![CDATA[
+            ]]></de>
+            <en><![CDATA[
+            ]]></en>
+        </locale>
+        <locale name="panel.category.title">
+            <de><![CDATA[HTML Snippets]]></de>
+            <en><![CDATA[HTML Snippets]]></en>
+        </locale>
+        <locale name="grid.name">
+            <de><![CDATA[Snippet Name]]></de>
+            <en><![CDATA[Snippet name]]></en>
+        </locale>
+        <locale name="grid.event">
+            <de><![CDATA[Event]]></de>
+            <en><![CDATA[Event]]></en>
+        </locale>
+    </groups>
+
+</locales>
