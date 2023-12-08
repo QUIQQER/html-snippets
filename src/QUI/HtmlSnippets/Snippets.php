@@ -41,7 +41,7 @@ class Snippets
         }
 
         if (empty($eventName)) {
-            throw new QUI\Exception('Please enter a event');
+            throw new QUI\Exception('Please enter an event');
         }
 
         QUI::getDatabase()->insert(self::table(), [

@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <events>
-    <event on="onQuiqqer::template::header::begin" fire="\QUI\HtmlSnippets\EventHandler::onTemplateHeaderBegin"/>
-    <event on="onQuiqqer::template::header::end" fire="\QUI\HtmlSnippets\EventHandler::onTemplateHeaderEnd"/>
-    <event on="onQuiqqer::template::body::begin" fire="\QUI\HtmlSnippets\EventHandler::onTemplateBodyBegin"/>
-    <event on="onQuiqqer::template::body::end" fire="\QUI\HtmlSnippets\EventHandler::onTemplateBodyEnd"/>
+    <event on="onQuiqqerInit" fire="\QUI\HtmlSnippets\EventHandler::onQuiqqerInit"/>
 </events>
