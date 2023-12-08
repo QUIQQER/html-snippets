@@ -67,6 +67,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
 
             this.$Grid = new Grid(Container, {
                 height: Label.getParent('.qui-panel-content').getSize().y - 100,
+                multiple: true,
                 columnModel: [
                     {
                         header: QUILocale.get(lg, 'grid.name'),
@@ -107,7 +108,11 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                 refresh: this.refresh,
                 onDblClick: this.edit,
                 click: () => {
+                    const selected = this.$Grid.getSelectedData();
 
+                    if (selected.length) {
+                        this.$Grid.getButton('remove').enable();
+                    }
                 }
 
             });
@@ -130,6 +135,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                     data: result
                 });
 
+                this.$Grid.getButton('remove').disable();
                 this.Loader.hide();
             }, {
                 'package': 'quiqqer/html-snippets',
@@ -148,7 +154,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                 new AddSnippet({
                     Project: this.$Project,
                     events: {
-                        onSubmit: () => {
+                        onClose: () => {
                             this.refresh();
                         }
                     }
@@ -157,11 +163,27 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
         },
 
         edit: function() {
+            if (!this.$Project) {
+                return;
+            }
 
+            require([
+                'package/quiqqer/html-snippets/bin/backend/controls/windows/EditSnippet'
+            ], (EditSnippet) => {
+                new EditSnippet({
+                    Project: this.$Project,
+                    name: this.$Grid.getSelectedData()[0].name,
+                    events: {
+                        onClose: () => {
+                            this.refresh();
+                        }
+                    }
+                }).open();
+            });
         },
 
         remove: function() {
-            const selected = this.$Grid.getSelected();
+            const selected = this.$Grid.getSelectedData();
 
             if (!selected.length) {
                 return;
@@ -171,13 +193,24 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                 return entry.name;
             });
 
-            require(['qui/controls/windows/Confirm'], function(QUIConfirm) {
+            require(['qui/controls/windows/Confirm'], (QUIConfirm) => {
+                const listElements = (n) => {
+                    return '<li>' + n + '</li>';
+                };
+
                 new QUIConfirm({
                     icon: 'fa fa-trash',
+                    texticon: 'fa fa-trash',
                     title: QUILocale.get(lg, 'window.remove.title'),
-                    information: QUILocale.get(lg, 'window.remove.information'),
-                    text: QUILocale.get(lg, 'window.remove.text'),
+                    information: QUILocale.get(lg, 'window.remove.information', {
+                        snippetList: '<ul>' + snippetNames.map(listElements).join('') + '</ul>'
+                    }),
+                    text: QUILocale.get(lg, 'window.remove.text', {
+                        snippetList: snippetNames.join(', ')
+                    }),
                     autoclose: false,
+                    maxWidth: 600,
+                    maxHeight: 400,
                     events: {
                         onSubmit: (Win) => {
                             Win.Loader.show();

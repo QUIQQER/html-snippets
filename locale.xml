@@ -47,6 +47,23 @@
             <de><![CDATA[Snippet]]></de>
             <en><![CDATA[Snippet]]></en>
         </locale>
+
+        <locale name="window.remove.title">
+            <de><![CDATA[Snippet löschen]]></de>
+            <en><![CDATA[Delete snippet]]></en>
+        </locale>
+        <locale name="window.remove.text">
+            <de><![CDATA[Willst du die Snippets wirklich löschen?]]></de>
+            <en><![CDATA[Do you really want to delete the snippets?]]></en>
+        </locale>
+        <locale name="window.remove.information">
+            <de><![CDATA[
+            Die folgenden Snippets werden dauerhaft gelöscht: [snippetList].
+            ]]></de>
+            <en><![CDATA[
+            The following snippets are permanently deleted: [snippetList].
+            ]]></en>
+        </locale>
     </groups>
 
 </locales>

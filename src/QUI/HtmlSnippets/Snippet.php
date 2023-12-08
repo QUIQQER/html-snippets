@@ -2,24 +2,28 @@
 
 namespace QUI\HtmlSnippets;
 
+use QUI;
+use QUI\Interfaces\Users\User;
 use QUI\Projects\Project;
 
 class Snippet
 {
     protected string $name;
     protected Project $Project;
-    protected string $content;
+    protected string $snippet;
     protected string $event;
 
-    public function __construct(Project $Project, $name)
+    public function __construct(Project $Project, string $name)
     {
         $data = Snippets::getSnippetData($Project, $name);
 
         $this->Project = $Project;
         $this->name = $name;
-        $this->content = $data['snippet'];
+        $this->snippet = $data['snippet'];
         $this->event = $data['event'];
     }
+
+    //region get
 
     /**
      * Retrieves the name of the object.
@@ -43,22 +47,85 @@ class Snippet
 
     /**
      * Retrieves the snippet content.
-     *
-     * @return string The content as a string.
-     */
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    /**
-     * Retrieves the snippet content.
      * -> alias for getContent()
      *
      * @return string The snippet content as a string.
      */
     public function getSnippet(): string
     {
-        return $this->getContent();
+        return $this->snippet;
     }
+
+    /**
+     * Converts the object to an array representation.
+     * The array representation includes the name, event, project, and snippet properties.
+     *
+     * @return array The object properties as an associative array.
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'event' => $this->event,
+            'Project' => $this->Project->getName(),
+            'snippet' => $this->getSnippet()
+        ];
+    }
+
+    //endregion
+
+    //region set
+
+    /**
+     * Sets the event for the current object
+     *
+     * @param string $event The event to set
+     * @return void
+     */
+    public function setEvent(string $event): void
+    {
+        $this->event = $event;
+    }
+
+    /**
+     * Set the snippet for the current object.
+     *
+     * @param string $snippet The snippet to be set.
+     * @return void
+     */
+    public function setSnippet(string $snippet): void
+    {
+        $this->snippet = $snippet;
+    }
+
+    /**
+     * Saves the snippet to the database.
+     *
+     * @param User|null $User The user who is saving the snippet. If null, the user from the session will be used.
+     *
+     * @return void
+     * @throws QUI\Permissions\Exception|QUI\Database\Exception
+     */
+    public function save(User $User = null): void
+    {
+        if ($User === null) {
+            $User = QUI::getUserBySession();
+        }
+
+        QUI\Permissions\Permission::checkPermission('quiqqer.html-snippets.update', $User);
+
+        QUI::getDatabase()->update(
+            Snippets::table(),
+            [
+                'event' => $this->event,
+                'snippet' => $this->snippet
+            ],
+            [
+                'project' => $this->Project->getName(),
+                'name' => $this->name
+            ]
+        );
+    }
+
+    //endregion
 }

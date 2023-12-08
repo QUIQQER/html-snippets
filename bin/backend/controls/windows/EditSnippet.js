@@ -1,4 +1,4 @@
-define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', [
+define('package/quiqqer/html-snippets/bin/backend/controls/windows/EditSnippet', [
 
     'qui/QUI',
     'qui/controls/windows/Confirm',
@@ -6,8 +6,8 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
     'Locale',
     'Mustache',
 
-    'text!package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet.html',
-    'css!package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet.css'
+    'text!package/quiqqer/html-snippets/bin/backend/controls/windows/EditSnippet.html',
+    'css!package/quiqqer/html-snippets/bin/backend/controls/windows/EditSnippet.css'
 
 ], function(QUI, QUIConfirm, QUIAjax, QUILocale, Mustache, template) {
     'use strict';
@@ -17,7 +17,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
     return new Class({
 
         Extends: QUIConfirm,
-        Type: 'package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet',
+        Type: 'package/quiqqer/html-snippets/bin/backend/controls/windows/EditSnippet',
 
         Binds: [
             '$onOpen',
@@ -25,7 +25,8 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
         ],
 
         options: {
-            Project: null
+            Project: null,
+            name: null
         },
 
         initialize: function(options) {
@@ -45,7 +46,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
         },
 
         $onOpen: function() {
-            this.getContent().addClass('html-snippets-add');
+            this.getContent().addClass('html-snippets-edit');
 
             this.getContent().set('html', Mustache.render(template, {
                 textName: QUILocale.get(lg, 'window.name'),
@@ -58,6 +59,23 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
             });
 
             this.getContent().getElement('form').elements.name.focus();
+            this.Loader.show();
+
+            const Form = this.getContent().getElement('form');
+
+            QUIAjax.get('package_quiqqer_html-snippets_ajax_backend_getSnippet', (result) => {
+                Form.elements.name.value = result.name;
+                Form.elements.eventName.value = result.event;
+                Form.elements.snippet.value = result.snippet;
+                this.Loader.hide();
+            }, {
+                'package': 'quiqqer/html-snippets',
+                projectName: this.getAttribute('Project').getName(),
+                snippetName: this.getAttribute('name'),
+                onError: () => {
+                    this.close();
+                }
+            });
         },
 
         submit: function() {
@@ -72,10 +90,6 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
                 }
             };
 
-            if (Form.elements.name.value === '') {
-                return showError(Form.elements.name);
-            }
-
             if (Form.elements.eventName.value === '') {
                 return showError(Form.elements.eventName);
             }
@@ -86,7 +100,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
 
             this.Loader.show();
 
-            QUIAjax.post('package_quiqqer_html-snippets_ajax_backend_addSnippet', (snippetName) => {
+            QUIAjax.post('package_quiqqer_html-snippets_ajax_backend_saveSnippet', (snippetName) => {
                 this.fireEvent('submit', [this, snippetName]);
                 this.close();
             }, {
