@@ -16,11 +16,13 @@ class Snippets
     /**
      * @throws Exception
      */
-    public static function create(Project $Project, $name): Snippet
+    public static function create(Project $Project, $name, $eventName, $snippet): Snippet
     {
-        QUI::getDatabase()->insert(self::tabble(), [
+        QUI::getDatabase()->insert(self::table(), [
             'name' => $name,
-            'project' => $Project->getName()
+            'project' => $Project->getName(),
+            'event' => $eventName,
+            'snippet' => $snippet
         ]);
 
         return self::get($Project, $name);
@@ -35,7 +37,7 @@ class Snippets
      */
     public static function delete(Project $Project, $name): void
     {
-        QUI::getDatabase()->delete(self::tabble(), [
+        QUI::getDatabase()->delete(self::table(), [
             'name' => $name,
             'project' => $Project->getName()
         ]);
@@ -53,10 +55,27 @@ class Snippets
     }
 
     /**
+     * Retrieves the list of items associated with the given project.
+     *
+     * @param Project $Project The project object.
+     * @return array The list of items associated with the project.
+     * @throws Exception
+     */
+    public static function getList(Project $Project): array
+    {
+        return QUI::getDatabase()->fetch([
+            'from' => self::table(),
+            'where' => [
+                'project' => $Project->getName()
+            ]
+        ]);
+    }
+
+    /**
      * @throws QUI\Exception
      * @throws Exception
      */
-    public static function getSnippetData(Project $Project, $name): Snippet
+    public static function getSnippetData(Project $Project, $name): array
     {
         $result = QUI::getDatabase()->fetch([
             'from' => self::table(),

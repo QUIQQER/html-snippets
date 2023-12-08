@@ -26,4 +26,27 @@
         </locale>
     </groups>
 
+    <groups name="quiqqer/html-snippets" datatype="js">
+        <locale name="window.add.title">
+            <de><![CDATA[Snippet anlegen]]></de>
+            <en><![CDATA[Add snippet]]></en>
+        </locale>
+        <locale name="window.edit.title">
+            <de><![CDATA[Snippet editieren]]></de>
+            <en><![CDATA[Edit snippet]]></en>
+        </locale>
+        <locale name="window.name">
+            <de><![CDATA[Snippet Name]]></de>
+            <en><![CDATA[Snippet name]]></en>
+        </locale>
+        <locale name="window.event">
+            <de><![CDATA[Event]]></de>
+            <en><![CDATA[Event]]></en>
+        </locale>
+        <locale name="window.snippet">
+            <de><![CDATA[Snippet]]></de>
+            <en><![CDATA[Snippet]]></en>
+        </locale>
+    </groups>
+
 </locales>
