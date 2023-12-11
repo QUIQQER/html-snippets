@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiqqer>
+    <project>
+
+        <settings>
+            <window>
+                <categories>
+                    <category name="html-snippets">
+                        <text>
+                            <locale group="quiqqer/html-snippets" var="panel.category.title"/>
+                        </text>
+                        <icon>fa fa-html5</icon>
+
+                        <settings>
+                            <title>
+                                <locale group="quiqqer/html-snippets" var="panel.category.title"/>
+                            </title>
+
+                            <input type="hidden" data-qui="package/quiqqer/html-snippets/bin/backend/Snippets"/>
+                        </settings>
+                    </category>
+                </categories>
+            </window>
+
+        </settings>
+
+    </project>
+</quiqqer>
