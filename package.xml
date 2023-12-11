@@ -1,0 +1,28 @@
+<quiqqer>
+    <package>
+
+        <title>
+            <locale group="quiqqer/html-snippets" var="package.title"/>
+        </title>
+
+        <description>
+            <locale group="quiqqer/html-snippets" var="package.description"/>
+        </description>
+
+        <support>
+            <email><![CDATA[support@pcsg.de]]></email>
+            <forum><![CDATA[https://community.quiqqer.com]]></forum>
+            <source><![CDATA[https://dev.quiqqer.com/quiqqer/html-snippets]]></source>
+            <issues><![CDATA[https://dev.quiqqer.com/quiqqer/html-snippets/issues]]></issues>
+            <wiki><![CDATA[https://dev.quiqqer.com/quiqqer/html-snippets/wikis/home]]></wiki>
+        </support>
+
+        <copyright>
+            <name><![CDATA[PCSG - Computer & Internet Service OHG]]></name>
+            <license><![CDATA[GPL-3.0+]]></license>
+        </copyright>
+
+        <provider>
+        </provider>
+    </package>
+</quiqqer>

@@ -1,0 +1,44 @@
+<form>
+    <table class="data-table data-table-flexbox">
+        <tbody>
+        <tr>
+            <td>
+                <label class="field-container">
+                    <span class="field-container-item">{{textName}}</span>
+                    <input class="field-container-field" type="text" name="name" disabled/>
+                </label>
+            </td>
+        </tr>
+        <tr style="display: none" class="gdpr-row">
+            <td>
+                <label class="field-container">
+                    <span class="field-container-item">{{textGDPR}}</span>
+                    <select class="field-container-field" name="gdpr">
+                        <option value="">---</option>
+                        <option value="essential">{{textEssential}}</option>
+                        <option value="preferences">{{textPreferences}}</option>
+                        <option value="statistics">{{textStatistics}}</option>
+                        <option value="marketing">{{textMarketing}}</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="field-container">
+                    <span class="field-container-item">{{textEvent}}</span>
+                    <input class="field-container-field" type="text" name="eventName" required/>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="field-container">
+                    <span class="field-container-item">{{textSnippet}}</span>
+                    <textarea class="field-container-field" name="snippet" required></textarea>
+                </label>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>

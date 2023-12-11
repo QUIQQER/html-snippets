@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <global>
+        <table name="html_snippets">
+            <field type="VARCHAR(255)">name</field>
+            <field type="VARCHAR(64)">project</field>
+            <field type="VARCHAR(255)">event</field>
+            <field type="LONGTEXT NULL">snippet</field>
+            <field type="VARCHAR(64) NULL">gdpr</field>
+
+            <primary>name,project</primary>
+            <index>event</index>
+            <comment>This table contains the html snippets for the different projects.</comment>
+        </table>
+    </global>
+</database>
