@@ -12,7 +12,12 @@ class Snippet
     protected Project $Project;
     protected string $snippet;
     protected string $event;
+    protected string $gdprCategory = '';
 
+    /**
+     * @param Project $Project
+     * @param string $name
+     */
     public function __construct(Project $Project, string $name)
     {
         $data = Snippets::getSnippetData($Project, $name);
@@ -21,6 +26,7 @@ class Snippet
         $this->name = $name;
         $this->snippet = $data['snippet'];
         $this->event = $data['event'];
+        $this->gdprCategory = !empty($data['gdpr']) ? $data['gdpr'] : '';
     }
 
     //region get
@@ -68,7 +74,8 @@ class Snippet
             'name' => $this->name,
             'event' => $this->event,
             'Project' => $this->Project->getName(),
-            'snippet' => $this->getSnippet()
+            'snippet' => $this->getSnippet(),
+            'gdpr' => $this->gdprCategory
         ];
     }
 
@@ -98,6 +105,11 @@ class Snippet
         $this->snippet = $snippet;
     }
 
+    public function setGDPRCategory(string $gdprCategory): void
+    {
+        $this->gdprCategory = $gdprCategory;
+    }
+
     /**
      * Saves the snippet to the database.
      *
@@ -118,7 +130,8 @@ class Snippet
             Snippets::table(),
             [
                 'event' => $this->event,
-                'snippet' => $this->snippet
+                'snippet' => $this->snippet,
+                'gdpr' => $this->gdprCategory
             ],
             [
                 'project' => $this->Project->getName(),

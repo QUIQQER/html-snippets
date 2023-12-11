@@ -3,3 +3,8 @@
     position: relative;
     width: 100%;
 }
+
+.quiqqer-html-snippet-input select {
+    margin-bottom: 10px;
+    width: 100%;
+}

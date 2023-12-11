@@ -24,6 +24,10 @@
             <de><![CDATA[Event]]></de>
             <en><![CDATA[Event]]></en>
         </locale>
+        <locale name="grid.gdpr">
+            <de><![CDATA[GDPR Kategorie]]></de>
+            <en><![CDATA[GDPR Category]]></en>
+        </locale>
     </groups>
 
     <groups name="quiqqer/html-snippets" datatype="js">
@@ -47,6 +51,10 @@
             <de><![CDATA[Snippet]]></de>
             <en><![CDATA[Snippet]]></en>
         </locale>
+        <locale name="window.gdpr">
+            <de><![CDATA[GDPR Kategorie]]></de>
+            <en><![CDATA[GDPR Category]]></en>
+        </locale>
 
         <locale name="window.remove.title">
             <de><![CDATA[Snippet löschen]]></de>
@@ -58,10 +66,10 @@
         </locale>
         <locale name="window.remove.information">
             <de><![CDATA[
-            Die folgenden Snippets werden dauerhaft gelöscht: [snippetList].
+            Die folgenden Snippets werden dauerhaft gelöscht: [snippetList]
             ]]></de>
             <en><![CDATA[
-            The following snippets are permanently deleted: [snippetList].
+            The following snippets are permanently deleted: [snippetList]
             ]]></en>
         </locale>
     </groups>

@@ -10,11 +10,12 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
     'qui/QUI',
     'qui/controls/Control',
     'qui/controls/loader/Loader',
+    'package/quiqqer/html-snippets/bin/backend/Utils',
     'controls/grid/Grid',
     'Ajax',
     'Locale'
 
-], function(QUI, QUIControl, QUILoader, Grid, QUIAjax, QUILocale) {
+], function(QUI, QUIControl, QUILoader, SnippetUtils, Grid, QUIAjax, QUILocale) {
     'use strict';
 
     const lg = 'quiqqer/html-snippets';
@@ -65,10 +66,9 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                 }
             }).inject(Label);
 
-            this.$Grid = new Grid(Container, {
-                height: Label.getParent('.qui-panel-content').getSize().y - 100,
-                multiple: true,
-                columnModel: [
+            SnippetUtils.isGDPRInstalled().then((isInstalled) => {
+
+                const columnModel = [
                     {
                         header: QUILocale.get(lg, 'grid.name'),
                         dataIndex: 'name',
@@ -80,47 +80,62 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                         dataType: 'string',
                         width: 400
                     }
-                ],
-                buttons: [
-                    {
-                        name: 'add',
-                        text: QUILocale.get('quiqqer/quiqqer', 'add'),
-                        events: {
-                            click: this.add
-                        }
-                    }, {
-                        name: 'remove',
-                        icon: 'fa fa-trash',
-                        title: QUILocale.get('quiqqer/quiqqer', 'remove'),
-                        disabled: true,
-                        styles: {
-                            'float': 'right'
-                        },
-                        events: {
-                            click: this.remove
-                        }
-                    }
-                ]
-            });
+                ];
 
-            this.$Grid.disable();
-            this.$Grid.addEvents({
-                refresh: this.refresh,
-                onDblClick: this.edit,
-                click: () => {
-                    const selected = this.$Grid.getSelectedData();
-
-                    if (selected.length) {
-                        this.$Grid.getButton('remove').enable();
-                    }
+                if (isInstalled) {
+                    columnModel.push({
+                        header: QUILocale.get(lg, 'grid.gdpr'),
+                        dataIndex: 'gdpr',
+                        dataType: 'string',
+                        width: 200
+                    });
                 }
 
-            });
+                this.$Grid = new Grid(Container, {
+                    height: Label.getParent('.qui-panel-content').getSize().y - 100,
+                    multiple: true,
+                    columnModel: columnModel,
+                    buttons: [
+                        {
+                            name: 'add',
+                            text: QUILocale.get('quiqqer/quiqqer', 'add'),
+                            events: {
+                                click: this.add
+                            }
+                        }, {
+                            name: 'remove',
+                            icon: 'fa fa-trash',
+                            title: QUILocale.get('quiqqer/quiqqer', 'remove'),
+                            disabled: true,
+                            styles: {
+                                'float': 'right'
+                            },
+                            events: {
+                                click: this.remove
+                            }
+                        }
+                    ]
+                });
 
-            if (this.$Project) {
-                this.$Grid.enable();
-                this.$Grid.refresh();
-            }
+                this.$Grid.disable();
+                this.$Grid.addEvents({
+                    refresh: this.refresh,
+                    onDblClick: this.edit,
+                    click: () => {
+                        const selected = this.$Grid.getSelectedData();
+
+                        if (selected.length) {
+                            this.$Grid.getButton('remove').enable();
+                        }
+                    }
+
+                });
+
+                if (this.$Project) {
+                    this.$Grid.enable();
+                    this.$Grid.refresh();
+                }
+            });
         },
 
         refresh: function() {

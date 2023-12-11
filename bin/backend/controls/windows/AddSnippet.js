@@ -2,6 +2,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
 
     'qui/QUI',
     'qui/controls/windows/Confirm',
+    'package/quiqqer/html-snippets/bin/backend/Utils',
     'Ajax',
     'Locale',
     'Mustache',
@@ -9,7 +10,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
     'text!package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet.html',
     'css!package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet.css'
 
-], function(QUI, QUIConfirm, QUIAjax, QUILocale, Mustache, template) {
+], function(QUI, QUIConfirm, SnippetUtils, QUIAjax, QUILocale, Mustache, template) {
     'use strict';
 
     const lg = 'quiqqer/html-snippets';
@@ -50,8 +51,19 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
             this.getContent().set('html', Mustache.render(template, {
                 textName: QUILocale.get(lg, 'window.name'),
                 textEvent: QUILocale.get(lg, 'window.event'),
-                textSnippet: QUILocale.get(lg, 'window.snippet')
+                textSnippet: QUILocale.get(lg, 'window.snippet'),
+                textGDPR: QUILocale.get(lg, 'window.gdpr'),
+                textEssential: QUILocale.get('quiqqer/gdpr', 'cookie.category.essential'),
+                textPreferences: QUILocale.get('quiqqer/gdpr', 'cookie.category.preferences'),
+                textStatistics: QUILocale.get('quiqqer/gdpr', 'cookie.category.statistics'),
+                textMarketing: QUILocale.get('quiqqer/gdpr', 'cookie.category.marketing')
             }));
+
+            SnippetUtils.isGDPRInstalled().then((isInstalled) => {
+                if (isInstalled) {
+                    this.getContent().getElement('.gdpr-row').setStyle('display', null);
+                }
+            });
 
             this.getContent().getElement('submit', (e) => {
                 e.stop();
@@ -95,6 +107,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
                 snippetName: Form.elements.name.value,
                 eventName: Form.elements.eventName.value,
                 snippet: Form.elements.snippet.value,
+                gdpr: Form.elements.gdpr.value,
                 onError: () => {
                     this.Loader.hide();
                 }
