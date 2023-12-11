@@ -3,6 +3,7 @@
 namespace QUI\HtmlSnippets;
 
 use QUI;
+use Quiqqer\Engine\Collector;
 
 class EventHandler
 {
@@ -29,6 +30,17 @@ class EventHandler
 
         foreach (self::$events as $event => $snippet) {
             QUI::getEvents()->addEvent($event, [new SnippetTemplateEvent($snippet), 'onFireEvent']);
+        }
+    }
+
+    public static function onTemplateEnd(
+        Collector $Collection,
+        QUI\Template $Template
+    ) {
+        if (QUI::getPackageManager()->isInstalled('quiqqer/gdpr')) {
+            $Collection->append(
+                '<script src="' . URL_OPT_DIR . 'quiqqer/html-snippets/bin/frontend/gdprReader.js"></script>'
+            );
         }
     }
 }
