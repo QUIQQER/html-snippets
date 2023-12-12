@@ -5,6 +5,8 @@ namespace QUI\HtmlSnippets;
 use QUI;
 use Quiqqer\Engine\Collector;
 
+use function is_array;
+
 class EventHandler
 {
     protected static array|null $events = null;
@@ -28,8 +30,10 @@ class EventHandler
             self::$events[$snippet['event']][] = $snippet;
         }
 
-        foreach (self::$events as $event => $snippet) {
-            QUI::getEvents()->addEvent($event, [new SnippetTemplateEvent($snippet), 'onFireEvent']);
+        if (is_array(self::$events)) {
+            foreach (self::$events as $event => $snippet) {
+                QUI::getEvents()->addEvent($event, [new SnippetTemplateEvent($snippet), 'onFireEvent']);
+            }
         }
     }
 
