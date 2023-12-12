@@ -28,8 +28,10 @@ class EventHandler
             self::$events[$snippet['event']][] = $snippet;
         }
 
-        foreach (self::$events as $event => $snippet) {
-            QUI::getEvents()->addEvent($event, [new SnippetTemplateEvent($snippet), 'onFireEvent']);
+        if (is_iterable(self::$events)) {
+            foreach (self::$events as $event => $snippet) {
+                QUI::getEvents()->addEvent($event, [new SnippetTemplateEvent($snippet), 'onFireEvent']);
+            }
         }
     }
 
