@@ -1,9 +1,10 @@
 {
   "name": "quiqqer\/html-snippets",
   "type": "quiqqer-plugin",
-  "description": "",
+  "description": "The HTML Snippets module in QUIQQER allows you to quickly and efficiently insert HTML snippets",
   "license": [
-    "GPL-3.0+"
+    "PCSG QL-1.0",
+    "CC BY-NC-SA 4.0"
   ],
   "authors": [
     {
