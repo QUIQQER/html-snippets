@@ -1,5 +1,7 @@
 # QUIQQER HTML Snippets
 
+![QUIQQER HTML Snippets](bin/Readme.png)
+
 The HTML Snippets module in QUIQQER allows you to quickly and efficiently insert HTML snippets (small HTML code
 snippets) in specific places on your website. This module is particularly useful if you want to integrate third-party
 code.

@@ -8,8 +8,14 @@
         </locale>
         <locale name="package.description">
             <de><![CDATA[
+            Das HTML Snippets Modul in QUIQQER ermöglicht es dir, schnell und effizient HTML Snippets
+            (kleine HTML Code Snippets) an bestimmten Stellen deiner Website einfügen.
+            Dieses Modul ist besonders nützlich, wenn du Code von Drittanbietern integrieren möchtest.
             ]]></de>
             <en><![CDATA[
+            The HTML Snippets module in QUIQQER allows you to quickly and efficiently insert HTML snippets
+            (small HTML code snippets) in specific places on your website.
+            This module is particularly useful if you want to integrate third-party code.
             ]]></en>
         </locale>
         <locale name="panel.category.title">
