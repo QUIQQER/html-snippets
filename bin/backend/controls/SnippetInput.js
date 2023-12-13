@@ -50,6 +50,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
 
         $onImport: function() {
             this.$Textarea = this.getElm();
+            this.$Textarea.placeholder = '<html-snippet-code>code</html-snippet-code>';
 
             this.setAttribute('snippetName', this.$Textarea.get('data-qui-options-snippet'));
             this.setAttribute('snippetEvent', this.$Textarea.get('data-qui-options-event'));
