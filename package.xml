@@ -9,6 +9,13 @@
             <locale group="quiqqer/html-snippets" var="package.description"/>
         </description>
 
+        <image src="URL_OPT_DIR/quiqqer/html-snippets/bin/images/Logo.jpg"/>
+
+        <preview>
+            <image src="URL_OPT_DIR/quiqqer/html-snippets/bin/images/preview/preview-01.png"/>
+            <image src="URL_OPT_DIR/quiqqer/html-snippets/bin/images/preview/preview-02.png"/>
+        </preview>
+
         <support>
             <email><![CDATA[support@pcsg.de]]></email>
             <forum><![CDATA[https://community.quiqqer.com]]></forum>
@@ -21,8 +28,5 @@
             <name><![CDATA[PCSG - Computer & Internet Service OHG]]></name>
             <license><![CDATA[GPL-3.0+]]></license>
         </copyright>
-
-        <provider>
-        </provider>
     </package>
 </quiqqer>
