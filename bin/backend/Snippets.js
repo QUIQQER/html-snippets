@@ -100,7 +100,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
 
                 this.$Grid = new Grid(Container, {
                     height: Label.getParent('.qui-panel-content').getSize().y - 100,
-                    multiple: true,
+                    multipleSelection: true,
                     columnModel: columnModel,
                     buttons: [
                         {

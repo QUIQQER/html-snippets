@@ -17,6 +17,8 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
 ], function(QUI, QUIControl, QUILoader, QUISwitch, SnippetUtils, QUIAjax, QUILocale) {
     'use strict';
 
+    const lg = 'quiqqer/html-snippets';
+
     return new Class({
 
         Extends: QUIControl,
@@ -38,6 +40,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
             this.$data = null;
 
             this.$Status = null;
+            this.$StatusText = null;
             this.$Project = null;
             this.$GDPR = null;
 
@@ -74,7 +77,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
             SnippetUtils.isGDPRInstalled().then((isInstalled) => {
                 if (isInstalled) {
                     const GDPRLabel = new Element('label', {
-                        html: '<span>GDPR Kategorie</span>'
+                        html: '<span>' + QUILocale.get(lg, 'html.snippet.gdpr.title') + '</span>'
                     }).inject(this.$Elm, 'top');
 
 
@@ -107,7 +110,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
 
                 const Title = new Element('div', {
                     'class': 'quiqqer-html-snippet-input-title',
-                    html: '<span>HTML-Snippet</span>'
+                    html: '<span>' + QUILocale.get(lg, 'html.snippet.title') + '</span>'
                 }).inject(this.$Elm, 'top');
 
 
@@ -115,8 +118,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
                     'class': 'quiqqer-html-snippet-input-status'
                 }).inject(Title);
 
-                new Element('span', {
-                    html: 'HTML-Snippet ist aktiviert',
+                this.$StatusText = new Element('span', {
                     styles: {
                         'float': 'left'
                     }
@@ -137,10 +139,12 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
 
                 if (this.$data && this.$data.active) {
                     this.$Status.setSilentOn();
+                    this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.active'));
                 }
 
                 if (this.$data && !this.$data.active) {
                     this.$Status.setSilentOff();
+                    this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.deactive'));
                 }
             });
         },
@@ -190,8 +194,10 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
                     if (this.$Status) {
                         if (this.$data.active) {
                             this.$Status.setSilentOn();
+                            this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.active'));
                         } else {
                             this.$Status.setSilentOff();
+                            this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.deactive'));
                         }
                     }
 
@@ -237,6 +243,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
             if (status) {
                 SnippetUtils.activateSnippet(snippetName, project).then(() => {
                     this.Loader.hide();
+                    this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.active'));
                 }).catch((err) => {
                     QUI.getMessageHandler().then((MH) => {
                         MH.addError(err.getMessage());
@@ -245,6 +252,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
             } else {
                 SnippetUtils.deactivateSnippet(snippetName, project).then(() => {
                     this.Loader.hide();
+                    this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.deactive'));
                 }).catch((err) => {
                     QUI.getMessageHandler().then((MH) => {
                         MH.addError(err.getMessage());

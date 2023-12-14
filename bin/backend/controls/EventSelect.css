@@ -1,0 +1,24 @@
+.html-snippet-eventSelect {
+    position: relative;
+}
+
+.html-snippet-eventSelect input {
+    width: calc(100% - 50px);
+}
+
+.html-snippet-eventSelect-drop {
+    border-radius: 3px;
+    cursor: pointer;
+    line-height: 36px;
+    height: 36px;
+    position: absolute;
+    right: 2px;
+    text-align: center;
+    top: 2px;
+    width: 40px;
+}
+
+.html-snippet-eventSelect-drop:hover {
+    background: #2f8fc6;
+    color: #fff;
+}

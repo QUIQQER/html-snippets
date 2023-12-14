@@ -80,7 +80,10 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/EditSnippet',
                 Form.elements.eventName.value = result.event;
                 Form.elements.snippet.value = result.snippet;
                 Form.elements.gdpr.value = result.gdpr;
-                this.Loader.hide();
+
+                QUI.parse(this.getContent()).then(() => {
+                    this.Loader.hide();
+                });
             }, {
                 'package': 'quiqqer/html-snippets',
                 projectName: this.getAttribute('Project').getName(),
