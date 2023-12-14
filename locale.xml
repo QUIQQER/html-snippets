@@ -34,6 +34,10 @@
             <de><![CDATA[GDPR Kategorie]]></de>
             <en><![CDATA[GDPR Category]]></en>
         </locale>
+        <locale name="grid.status">
+            <de><![CDATA[Status]]></de>
+            <en><![CDATA[Status]]></en>
+        </locale>
     </groups>
 
     <groups name="quiqqer/html-snippets" datatype="js">

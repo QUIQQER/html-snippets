@@ -56,6 +56,10 @@ class SnippetTemplateEvent
         }
 
         foreach ($this->snippets as $snippet) {
+            if (empty($snippet['active'])) {
+                continue;
+            }
+
             $gdprIsInstalled = QUI::getPackageManager()->isInstalled('quiqqer/gdpr');
 
             if (empty($snippet['gdpr']) || !$gdprIsInstalled) {
