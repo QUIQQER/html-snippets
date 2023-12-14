@@ -11,11 +11,12 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
     'qui/controls/Control',
     'qui/controls/loader/Loader',
     'package/quiqqer/html-snippets/bin/backend/Utils',
+    'qui/controls/buttons/Switch',
     'controls/grid/Grid',
     'Ajax',
     'Locale'
 
-], function(QUI, QUIControl, QUILoader, SnippetUtils, Grid, QUIAjax, QUILocale) {
+], function(QUI, QUIControl, QUILoader, SnippetUtils, QUISwitch, Grid, QUIAjax, QUILocale) {
     'use strict';
 
     const lg = 'quiqqer/html-snippets';
@@ -30,7 +31,8 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
             'edit',
             'remove',
             'refresh',
-            '$onImport'
+            '$onImport',
+            '$onStatusChange'
         ],
 
         initialize: function(options) {
@@ -70,6 +72,11 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
 
                 const columnModel = [
                     {
+                        header: QUILocale.get(lg, 'grid.status'),
+                        dataIndex: 'status',
+                        dataType: 'QUI',
+                        width: 80
+                    }, {
                         header: QUILocale.get(lg, 'grid.name'),
                         dataIndex: 'name',
                         dataType: 'string',
@@ -93,7 +100,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
 
                 this.$Grid = new Grid(Container, {
                     height: Label.getParent('.qui-panel-content').getSize().y - 100,
-                    multiple: true,
+                    multipleSelection: true,
                     columnModel: columnModel,
                     buttons: [
                         {
@@ -146,6 +153,15 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
             this.Loader.show();
 
             QUIAjax.get('package_quiqqer_html-snippets_ajax_backend_getSnippets', (result) => {
+                for (let i = 0, len = result.length; i < len; i++) {
+                    result[i].status = new QUISwitch({
+                        status: result[i].active,
+                        events: {
+                            change: this.$onStatusChange
+                        }
+                    });
+                }
+
                 this.$Grid.setData({
                     data: result
                 });
@@ -246,6 +262,30 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                     }
                 }).open();
             });
+        },
+
+        $onStatusChange: function(Switch) {
+            const status = Switch.getStatus();
+            const Row = Switch.getElm().getParent('.tr');
+            const rowData = this.$Grid.getDataByRow(Row.get('data-row'));
+            const snippetName = rowData.name;
+            const project = rowData.project;
+
+            this.Loader.show();
+
+            if (status) {
+                SnippetUtils.activateSnippet(snippetName, project).then(() => {
+                    this.refresh();
+                }).catch(() => {
+                    this.refresh();
+                });
+            } else {
+                SnippetUtils.deactivateSnippet(snippetName, project).then(() => {
+                    this.refresh();
+                }).catch(() => {
+                    this.refresh();
+                });
+            }
         }
     });
 });

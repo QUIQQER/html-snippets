@@ -7,14 +7,17 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
     'qui/QUI',
     'qui/controls/Control',
     'qui/controls/loader/Loader',
+    'qui/controls/buttons/Switch',
     'package/quiqqer/html-snippets/bin/backend/Utils',
     'Ajax',
     'Locale',
 
     'css!package/quiqqer/html-snippets/bin/backend/controls/SnippetInput.css'
 
-], function(QUI, QUIControl, QUILoader, SnippetUtils, QUIAjax, QUILocale) {
+], function(QUI, QUIControl, QUILoader, QUISwitch, SnippetUtils, QUIAjax, QUILocale) {
     'use strict';
+
+    const lg = 'quiqqer/html-snippets';
 
     return new Class({
 
@@ -24,6 +27,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
         Binds: [
             '$onImport',
             '$onChange',
+            '$onStatusChange',
             '$load'
         ],
 
@@ -35,6 +39,8 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
             this.$loaded = false;
             this.$data = null;
 
+            this.$Status = null;
+            this.$StatusText = null;
             this.$Project = null;
             this.$GDPR = null;
 
@@ -50,19 +56,31 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
 
         $onImport: function() {
             this.$Textarea = this.getElm();
+            this.$Textarea.placeholder = '<html-snippet-code>code</html-snippet-code>';
 
             this.setAttribute('snippetName', this.$Textarea.get('data-qui-options-snippet'));
             this.setAttribute('snippetEvent', this.$Textarea.get('data-qui-options-event'));
 
+            const TextAreaLabel = new Element('label').wraps(this.$Textarea);
+
+            new Element('span', {
+                html: 'Code'
+            }).inject(TextAreaLabel, 'top');
+
             this.$Elm = new Element('div', {
                 'class': 'field-container-field quiqqer-html-snippet-input'
-            }).wraps(this.$Textarea);
+            }).wraps(TextAreaLabel);
 
             this.Loader.inject(this.$Elm);
             this.Loader.show();
 
             SnippetUtils.isGDPRInstalled().then((isInstalled) => {
                 if (isInstalled) {
+                    const GDPRLabel = new Element('label', {
+                        html: '<span>' + QUILocale.get(lg, 'html.snippet.gdpr.title') + '</span>'
+                    }).inject(this.$Elm, 'top');
+
+
                     this.$GDPR = new Element('select', {
                         name: 'gdpr',
                         html: '' +
@@ -82,12 +100,35 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
                         events: {
                             change: this.$onChange
                         }
-                    }).inject(this.$Elm, 'top');
+                    }).inject(GDPRLabel);
 
                     if (this.$data) {
                         this.$GDPR.value = this.$data.gdpr;
                     }
                 }
+
+
+                const Title = new Element('div', {
+                    'class': 'quiqqer-html-snippet-input-title',
+                    html: '<span>' + QUILocale.get(lg, 'html.snippet.title') + '</span>'
+                }).inject(this.$Elm, 'top');
+
+
+                this.$StatusContainer = new Element('div', {
+                    'class': 'quiqqer-html-snippet-input-status'
+                }).inject(Title);
+
+                this.$StatusText = new Element('span', {
+                    styles: {
+                        'float': 'left'
+                    }
+                }).inject(this.$StatusContainer);
+
+                this.$Status = new QUISwitch({
+                    events: {
+                        onChange: this.$onStatusChange
+                    }
+                }).inject(this.$StatusContainer);
 
                 return this.$load();
             }).then(() => {
@@ -95,6 +136,16 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
                     change: this.$onChange,
                     blur: this.$onChange
                 });
+
+                if (this.$data && this.$data.active) {
+                    this.$Status.setSilentOn();
+                    this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.active'));
+                }
+
+                if (this.$data && !this.$data.active) {
+                    this.$Status.setSilentOff();
+                    this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.deactive'));
+                }
             });
         },
 
@@ -140,6 +191,16 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
                         this.$GDPR.value = snippetData.gdpr;
                     }
 
+                    if (this.$Status) {
+                        if (this.$data.active) {
+                            this.$Status.setSilentOn();
+                            this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.active'));
+                        } else {
+                            this.$Status.setSilentOff();
+                            this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.deactive'));
+                        }
+                    }
+
                     this.Loader.hide();
                     resolve();
                 }, {
@@ -170,6 +231,34 @@ define('package/quiqqer/html-snippets/bin/backend/controls/SnippetInput', [
                     }
                 });
             });
+        },
+
+        $onStatusChange: function() {
+            const status = this.$Status.getStatus();
+            const project = this.$Project.getName();
+            const snippetName = this.getAttribute('snippetName');
+
+            this.Loader.show();
+
+            if (status) {
+                SnippetUtils.activateSnippet(snippetName, project).then(() => {
+                    this.Loader.hide();
+                    this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.active'));
+                }).catch((err) => {
+                    QUI.getMessageHandler().then((MH) => {
+                        MH.addError(err.getMessage());
+                    });
+                });
+            } else {
+                SnippetUtils.deactivateSnippet(snippetName, project).then(() => {
+                    this.Loader.hide();
+                    this.$StatusText.set('html', QUILocale.get(lg, 'html.snippet.deactive'));
+                }).catch((err) => {
+                    QUI.getMessageHandler().then((MH) => {
+                        MH.addError(err.getMessage());
+                    });
+                });
+            }
         }
     });
 });

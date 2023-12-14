@@ -46,6 +46,7 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
         },
 
         $onOpen: function() {
+            this.Loader.show();
             this.getContent().addClass('html-snippets-add');
 
             this.getContent().set('html', Mustache.render(template, {
@@ -70,6 +71,10 @@ define('package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet', 
             });
 
             this.getContent().getElement('form').elements.name.focus();
+
+            QUI.parse(this.getContent()).then(() => {
+                this.Loader.hide();
+            });
         },
 
         submit: function() {

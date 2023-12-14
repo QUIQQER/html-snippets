@@ -2,6 +2,7 @@
 <database>
     <global>
         <table name="html_snippets">
+            <field type="INT(1) DEFAULT 0">active</field>
             <field type="VARCHAR(255)">name</field>
             <field type="VARCHAR(64)">project</field>
             <field type="VARCHAR(255)">event</field>
@@ -10,6 +11,7 @@
 
             <primary>name,project</primary>
             <index>event</index>
+            <index>active</index>
             <comment>This table contains the html snippets for the different projects.</comment>
         </table>
     </global>
