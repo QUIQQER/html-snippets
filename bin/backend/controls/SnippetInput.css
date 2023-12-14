@@ -1,10 +1,55 @@
+.quiqqer-html-snippet-input {
+    background: #f6f8fb;
+    padding: 10px;
+}
+
 .quiqqer-html-snippet-input textarea {
+    border: 1px solid #DEDEDE !important;
     min-height: 200px;
     position: relative;
     width: 100%;
 }
 
-.quiqqer-html-snippet-input select {
-    margin-bottom: 10px;
+.quiqqer-html-snippet-input > label {
+    float: left;
+    margin: 10px 0 5px;
+    width: 100% !important;
+}
+
+.quiqqer-html-snippet-input > label > span:first-child {
+    display: inline-block;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 3px;
     width: 100%;
+}
+
+
+.quiqqer-html-snippet-input [name="gdpr"] {
+    background: #fff;
+    width: 100%;
+}
+
+.quiqqer-html-snippet-input-title {
+    border-bottom: 1px solid #0420451a;
+    width: 100%;
+    display: inline-block;
+    line-height: 2rem;
+    padding-bottom: 1rem;
+    position: relative;
+}
+
+.quiqqer-html-snippet-input-title > span {
+    font-size: 1.5rem;
+}
+
+.quiqqer-html-snippet-input-status {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+
+.quiqqer-html-snippet-input-status > span {
+    font-size: 12px;
+    margin-right: 10px;
 }

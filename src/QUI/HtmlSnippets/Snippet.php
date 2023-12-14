@@ -4,6 +4,7 @@ namespace QUI\HtmlSnippets;
 
 use QUI;
 use QUI\Interfaces\Users\User;
+use QUI\Permissions\Exception;
 use QUI\Projects\Project;
 
 class Snippet
@@ -12,6 +13,7 @@ class Snippet
     protected Project $Project;
     protected string $snippet;
     protected string $event;
+    protected bool $active = false;
     protected string $gdprCategory = '';
 
     /**
@@ -27,6 +29,7 @@ class Snippet
         $this->snippet = $data['snippet'];
         $this->event = $data['event'];
         $this->gdprCategory = !empty($data['gdpr']) ? $data['gdpr'] : '';
+        $this->active = !empty($data['active']);
     }
 
     //region get
@@ -75,8 +78,14 @@ class Snippet
             'event' => $this->event,
             'Project' => $this->Project->getName(),
             'snippet' => $this->getSnippet(),
-            'gdpr' => $this->gdprCategory
+            'gdpr' => $this->gdprCategory,
+            'active' => $this->active ? 1 : 0
         ];
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 
     //endregion
@@ -111,6 +120,26 @@ class Snippet
     }
 
     /**
+     * @throws Exception
+     * @throws QUI\Database\Exception
+     */
+    public function activate(User $User = null): void
+    {
+        $this->active = true;
+        $this->save($User);
+    }
+
+    /**
+     * @throws Exception
+     * @throws QUI\Database\Exception
+     */
+    public function deactivate(User $User = null): void
+    {
+        $this->active = false;
+        $this->save($User);
+    }
+
+    /**
      * Saves the snippet to the database.
      *
      * @param User|null $User The user who is saving the snippet. If null, the user from the session will be used.
@@ -129,6 +158,7 @@ class Snippet
         QUI::getDatabase()->update(
             Snippets::table(),
             [
+                'active' => $this->active ? 1 : 0,
                 'event' => $this->event,
                 'snippet' => $this->snippet,
                 'gdpr' => $this->gdprCategory

@@ -34,6 +34,10 @@
             <de><![CDATA[GDPR Kategorie]]></de>
             <en><![CDATA[GDPR Category]]></en>
         </locale>
+        <locale name="grid.status">
+            <de><![CDATA[Status]]></de>
+            <en><![CDATA[Status]]></en>
+        </locale>
     </groups>
 
     <groups name="quiqqer/html-snippets" datatype="js">
@@ -61,6 +65,42 @@
             <de><![CDATA[GDPR Kategorie]]></de>
             <en><![CDATA[GDPR Category]]></en>
         </locale>
+
+        <locale name="html.snippet.title">
+            <de><![CDATA[HTML-Snippet]]></de>
+            <en><![CDATA[HTML-Snippet]]></en>
+        </locale>
+        <locale name="html.snippet.gdpr.title">
+            <de><![CDATA[GDPR Kategorie]]></de>
+            <en><![CDATA[GDPR category]]></en>
+        </locale>
+        <locale name="html.snippet.active">
+            <de><![CDATA[HTML-Snippet ist aktiviert]]></de>
+            <en><![CDATA[HTML snippet is activated]]></en>
+        </locale>
+        <locale name="html.snippet.deactive">
+            <de><![CDATA[HTML-Snippet ist deaktiviert]]></de>
+            <en><![CDATA[HTML snippet is edactivated]]></en>
+        </locale>
+
+
+        <locale name="html.snippet.select.template.event.headerBegin">
+            <de><![CDATA[<b>Header ganz oben</b> (onQuiqqer::template::header::begin)]]></de>
+            <en><![CDATA[<b>Header ganz oben</b> (onQuiqqer::template::header::begin)]]></en>
+        </locale>
+        <locale name="html.snippet.select.template.event.headerEnd">
+            <de><![CDATA[<b>Header ganz unten</b> (onQuiqqer::template::header::end)]]></de>
+            <en><![CDATA[<b>Header ganz unten</b> (onQuiqqer::template::header::end)]]></en>
+        </locale>
+        <locale name="html.snippet.select.template.event.bodyBegin">
+            <de><![CDATA[<b>Body ganz oben</b> (onQuiqqer::template::body::begin)]]></de>
+            <en><![CDATA[<b>Body ganz oben</b> (onQuiqqer::template::body::begin)]]></en>
+        </locale>
+        <locale name="html.snippet.select.template.event.bodyEnd">
+            <de><![CDATA[<b>Body ganz unten</b> (onQuiqqer::template::body::end)]]></de>
+            <en><![CDATA[<b>Body ganz unten</b> (onQuiqqer::template::body::end)]]></en>
+        </locale>
+
 
         <locale name="window.remove.title">
             <de><![CDATA[Snippet löschen]]></de>

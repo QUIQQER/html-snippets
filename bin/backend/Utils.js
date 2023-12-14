@@ -15,9 +15,30 @@ define('package/quiqqer/html-snippets/bin/backend/Utils', function() {
             });
         },
 
-        getGDPRList: function() {
-            
-        }
+        activateSnippet: function(snippetName, project) {
+            return new Promise(function(resolve, reject) {
+                require(['Ajax'], function(QUIAjax) {
+                    QUIAjax.post('package_quiqqer_html-snippets_ajax_backend_activateSnippet', resolve, {
+                        'package': 'quiqqer/html-snippets',
+                        projectName: project,
+                        snippetName: snippetName,
+                        onError: reject
+                    });
+                });
+            });
+        },
 
+        deactivateSnippet: function(snippetName, project) {
+            return new Promise(function(resolve, reject) {
+                require(['Ajax'], function(QUIAjax) {
+                    QUIAjax.post('package_quiqqer_html-snippets_ajax_backend_deactivateSnippet', resolve, {
+                        'package': 'quiqqer/html-snippets',
+                        projectName: project,
+                        snippetName: snippetName,
+                        onError: reject
+                    });
+                });
+            });
+        }
     };
 });
