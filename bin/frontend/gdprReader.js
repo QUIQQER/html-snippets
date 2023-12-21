@@ -12,6 +12,14 @@
         scripts.forEach((script) => {
             const newScript = document.createElement('script');
             newScript.textContent = script.textContent;
+
+            let i, len, attribute;
+
+            for (i = 0, len = script.attributes.length; i < len; i++) {
+                attribute = script.attributes[i];
+                newScript.setAttribute(attribute.name, attribute.value);
+            }
+
             script.parentNode.replaceChild(newScript, script);
         });
 
