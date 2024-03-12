@@ -155,7 +155,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
             QUIAjax.get('package_quiqqer_html-snippets_ajax_backend_getSnippets', (result) => {
                 for (let i = 0, len = result.length; i < len; i++) {
                     result[i].status = new QUISwitch({
-                        status: result[i].active,
+                        status: parseInt(result[i].active),
                         events: {
                             change: this.$onStatusChange
                         }
