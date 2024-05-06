@@ -3,7 +3,7 @@
 namespace QUI\HtmlSnippets;
 
 use QUI;
-use Quiqqer\Engine\Collector;
+use QUI\Smarty\Collector;
 
 use function array_values;
 use function base64_encode;

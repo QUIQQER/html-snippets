@@ -19,6 +19,7 @@ class Snippet
     /**
      * @param Project $Project
      * @param string $name
+     * @throws QUI\Exception
      */
     public function __construct(Project $Project, string $name)
     {

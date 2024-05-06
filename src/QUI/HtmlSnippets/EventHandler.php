@@ -3,7 +3,7 @@
 namespace QUI\HtmlSnippets;
 
 use QUI;
-use Quiqqer\Engine\Collector;
+use QUI\Smarty\Collector;
 
 class EventHandler
 {
@@ -38,7 +38,7 @@ class EventHandler
     public static function onTemplateEnd(
         Collector $Collection,
         QUI\Template $Template
-    ) {
+    ): void {
         if (QUI::getPackageManager()->isInstalled('quiqqer/gdpr')) {
             $Collection->append(
                 '<script src="' . URL_OPT_DIR . 'quiqqer/html-snippets/bin/frontend/gdprReader.js"></script>'
