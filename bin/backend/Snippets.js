@@ -105,14 +105,14 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                     buttons: [
                         {
                             name: 'add',
-                            text: QUILocale.get('quiqqer/quiqqer', 'add'),
+                            text: QUILocale.get('quiqqer/core', 'add'),
                             events: {
                                 click: this.add
                             }
                         }, {
                             name: 'remove',
                             icon: 'fa fa-trash',
-                            title: QUILocale.get('quiqqer/quiqqer', 'remove'),
+                            title: QUILocale.get('quiqqer/core', 'remove'),
                             disabled: true,
                             styles: {
                                 'float': 'right'
