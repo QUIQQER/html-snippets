@@ -3,7 +3,7 @@
 namespace QUI\HtmlSnippets;
 
 use QUI;
-use Quiqqer\Engine\Collector;
+use QUI\Smarty\Collector;
 
 use function array_values;
 use function base64_encode;
@@ -68,13 +68,14 @@ class SnippetTemplateEvent
             }
 
             // consider gdpr status
-            $div = '<div ';
+            $div = '<script ';
             $div .= ' data-qui-html-snippet="gdpr"';
             $div .= ' data-qui-html-snippet-gdpr-category="' . $snippet['gdpr'] . '"';
             $div .= ' style="display: none"';
+            $div .= ' type="text/plain"';
             $div .= '>';
             $div .= base64_encode($snippet['snippet']);
-            $div .= '</div>';
+            $div .= '</script>';
 
             $Collector->append($div);
         }
