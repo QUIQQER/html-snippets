@@ -184,7 +184,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
             if (!this.$Project) {
                 return;
             }
-console.log(123);
+
             require([
                 'package/quiqqer/html-snippets/bin/backend/controls/windows/AddSnippet'
             ], (AddSnippet) => {
