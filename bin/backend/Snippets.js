@@ -110,7 +110,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                     buttons: [
                         {
                             name: 'addSnippet',
-                            text: QUILocale.get('quiqqer/core', 'add'),
+                            text: QUILocale.get('quiqqer/quiqqer', 'add'),
                             position: 'left',
                             events: {
                                 click: this.add
@@ -118,7 +118,7 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                         }, {
                             name: 'remove',
                             icon: 'fa fa-trash',
-                            title: QUILocale.get('quiqqer/core', 'remove'),
+                            title: QUILocale.get('quiqqer/quiqqer', 'remove'),
                             disabled: true,
                             styles: {
                                 'float': 'right'
