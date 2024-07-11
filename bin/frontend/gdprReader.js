@@ -1,49 +1,64 @@
 (function() {
     'use strict';
 
-    const loadNode = function(Node) {
-        if (Node.getAttribute('data-qui-html-snippet-gdpr-loaded')) {
-            return;
-        }
+    const processSnippetNodes = function(nodes) {
+        // Gather all HTML snippet nodes ("template" elements with a specific "data-" attribute)
+        const SnippetsNodeList = document.querySelectorAll('template[data-qui-html-snippet="gdpr"]');
 
-        Node.innerHTML = atob(Node.innerHTML);
-        const scripts = Array.from(Node.getElementsByTagName('script'));
+        SnippetsNodeList.forEach((SnippetNode) => {
+            const gdprCategory = SnippetNode.getAttribute('data-qui-html-snippet-gdpr-category');
 
-        scripts.forEach((script) => {
-            const newScript = document.createElement('script');
-            newScript.textContent = script.textContent;
-
-            let i, len, attribute;
-
-            for (i = 0, len = script.attributes.length; i < len; i++) {
-                attribute = script.attributes[i];
-                newScript.setAttribute(attribute.name, attribute.value);
-            }
-
-            script.parentNode.replaceChild(newScript, script);
-        });
-
-        Node.setAttribute('data-qui-html-snippet-gdpr-loaded', 1);
-        Node.style.display = '';
-    };
-
-    const fetchNodes = function(nodes) {
-        nodes.forEach((Node) => {
-            const gdprCategory = Node.getAttribute('data-qui-html-snippet-gdpr-category');
-
-            if (window.GDPR.isCookieCategoryAccepted(gdprCategory)) {
-                loadNode(Node);
-            } else {
-                window.GDPR.waitForCookieCategoryAcceptance(gdprCategory).then(() => {
-                    loadNode(Node);
-                });
-            }
+            // Only decode (and execute) the snippet node, if the corresponding gdpr category was accepted
+            window.GDPR.waitForCookieCategoryAcceptance(gdprCategory).then(() => {
+                decodeSnippetNode(SnippetNode);
+            });
         });
     };
 
-    fetchNodes(document.querySelectorAll('[data-qui-html-snippet="gdpr"]'));
+    const decodeSnippetNode = function(SnippetNode) {
+        // The node's inner HTML is base64 encoded, turn it back to normal HTML
+        SnippetNode.innerHTML = atob(SnippetNode.innerHTML);
 
-    window.whenQuiLoaded().then(() => {
-        fetchNodes(document.querySelectorAll('[data-qui-html-snippet="gdpr"]'));
-    });
+        // The snippet code is in a wrapping <template> node and thus isn't interpreted
+        // Therefore we have to move all nodes inside this template snippet node into the document
+        // We do that by iterating over all direct children of the template element and...
+        Array.from(SnippetNode.content.children).forEach(ChildNode => {
+            let NodeToInsert = ChildNode;
+
+            // ...if it is a script tag it needs special treatment
+            if (ChildNode.tagName === 'SCRIPT') {
+                // "script" tags are not executed when moved from the snippet node to the document
+                // Therefore a new element has to be created instead
+                // The new element is executed when added to the document
+                NodeToInsert = createExecutableCopyOfScriptNode(ChildNode);
+
+                // Remove the original script node as we are using the copy now
+                ChildNode.remove();
+            }
+
+            // ...moving the child node from inside the template snippet node in front of the snippet node
+            SnippetNode.insertAdjacentElement('beforebegin', NodeToInsert);
+        });
+
+        // ...and deleting the now empty snippet node
+        SnippetNode.remove();
+    };
+
+    const createExecutableCopyOfScriptNode = function (ScriptNode) {
+        const ExecutableScriptNode = document.createElement('script');
+
+        // Copy the script's text content (the JavaScript code)
+        ExecutableScriptNode.textContent = ScriptNode.textContent;
+
+        // Copy all the script's attributes
+        Array.from(ScriptNode.attributes).forEach(ScriptAttribute => {
+            ExecutableScriptNode.setAttribute(ScriptAttribute.name, ScriptAttribute.value);
+        });
+
+        return ExecutableScriptNode;
+    };
+
+    processSnippetNodes();
+
+    window.whenQuiLoaded().then(processSnippetNodes);
 })();

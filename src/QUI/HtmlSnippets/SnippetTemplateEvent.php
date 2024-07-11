@@ -67,17 +67,19 @@ class SnippetTemplateEvent
                 continue;
             }
 
-            // consider gdpr status
-            $div = '<script ';
-            $div .= ' data-qui-html-snippet="gdpr"';
-            $div .= ' data-qui-html-snippet-gdpr-category="' . $snippet['gdpr'] . '"';
-            $div .= ' style="display: none"';
-            $div .= ' type="text/plain"';
-            $div .= '>';
-            $div .= base64_encode($snippet['snippet']);
-            $div .= '</script>';
+            $snippetGdprCategory = $snippet['gdpr'];
+            $snippetContentEncoded = base64_encode($snippet['snippet']);
 
-            $Collector->append($div);
+            $snippetHtml = <<<EOF
+<template
+    data-qui-html-snippet="gdpr"
+    data-qui-html-snippet-gdpr-category="$snippetGdprCategory"
+>
+$snippetContentEncoded
+</template>
+EOF;
+
+            $Collector->append($snippetHtml);
         }
     }
 }
