@@ -70,6 +70,8 @@ define('package/quiqqer/html-snippets/bin/backend/controls/EventSelect', [
                 }
             }).inject(this.$Elm);
 
+            this.$Menu.setParent(this);
+
             this.$Menu.appendChild(
                 new QUIMenuItem({
                     text: QUILocale.get(lg, 'html.snippet.select.template.event.headerBegin'),
@@ -114,6 +116,10 @@ define('package/quiqqer/html-snippets/bin/backend/controls/EventSelect', [
         $openMenu: function() {
             this.$Menu.setPosition(-10, 50);
             this.$Menu.show();
+
+            (() => {
+                this.$Menu.show();
+            }).delay(10);
         },
 
         $keyup: function(e) {
