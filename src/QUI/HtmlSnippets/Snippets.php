@@ -32,7 +32,7 @@ class Snippets
         string $name,
         string $eventName,
         string $snippet,
-        QUI\Interfaces\Users\User $User = null
+        null|QUI\Interfaces\Users\User $User = null
     ): Snippet {
         QUI\Permissions\Permission::checkPermission('quiqqer.html-snippets.create', $User);
 
@@ -66,7 +66,7 @@ class Snippets
     public static function delete(
         Project $Project,
         string $name,
-        QUI\Interfaces\Users\User $User = null
+        null|QUI\Interfaces\Users\User $User = null
     ): void {
         QUI\Permissions\Permission::checkPermission('quiqqer.html-snippets.create', $User);
 
