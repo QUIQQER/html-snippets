@@ -1,7 +1,4 @@
 {
-  "config": {
-    "bootstrap": "tests/captainhook-bootstrap.php"
-  },
   "pre-commit": {
     "enabled": true,
     "actions": [
@@ -9,7 +6,7 @@
         "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting"
       },
       {
-          "action": "composer test"
+        "action": "composer test"
       }
     ]
   }

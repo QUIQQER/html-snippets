@@ -60,13 +60,18 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
 
         $onImport: function() {
             const Label = this.getElm().getParent('label');
+            const Parent = Label.parentNode;
             Label.getElements('.field-container-item').destroy();
 
             const Container = new Element('div', {
                 styles: {
                     width: '100%'
                 }
-            }).inject(Label);
+            });
+
+            Parent.appendChild(this.$Elm);
+            Parent.replaceChild(Container, Label);
+
 
             SnippetUtils.isGDPRInstalled().then((isInstalled) => {
 
@@ -99,13 +104,14 @@ define('package/quiqqer/html-snippets/bin/backend/Snippets', [
                 }
 
                 this.$Grid = new Grid(Container, {
-                    height: Label.getParent('.qui-panel-content').getSize().y - 100,
+                    height: Parent.getParent('.qui-panel-content').getSize().y - 100,
                     multipleSelection: true,
                     columnModel: columnModel,
                     buttons: [
                         {
-                            name: 'add',
+                            name: 'addSnippet',
                             text: QUILocale.get('quiqqer/core', 'add'),
+                            position: 'left',
                             events: {
                                 click: this.add
                             }
