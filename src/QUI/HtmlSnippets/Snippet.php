@@ -124,7 +124,7 @@ class Snippet
      * @throws Exception
      * @throws QUI\Database\Exception
      */
-    public function activate(User $User = null): void
+    public function activate(?User $User = null): void
     {
         $this->active = true;
         $this->save($User);
@@ -134,7 +134,7 @@ class Snippet
      * @throws Exception
      * @throws QUI\Database\Exception
      */
-    public function deactivate(User $User = null): void
+    public function deactivate(?User $User = null): void
     {
         $this->active = false;
         $this->save($User);
@@ -148,7 +148,7 @@ class Snippet
      * @return void
      * @throws QUI\Permissions\Exception|QUI\Database\Exception
      */
-    public function save(User $User = null): void
+    public function save(?User $User = null): void
     {
         if ($User === null) {
             $User = QUI::getUserBySession();
