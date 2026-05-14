@@ -38,6 +38,22 @@
             <de><![CDATA[Status]]></de>
             <en><![CDATA[Status]]></en>
         </locale>
+        <locale name="permission.quiqqer.html-snippets._header">
+            <de><![CDATA[HTML Snippets]]></de>
+            <en><![CDATA[HTML Snippets]]></en>
+        </locale>
+        <locale name="permission.quiqqer.html-snippets.create">
+            <de><![CDATA[Darf HTML Snippets erstellen]]></de>
+            <en><![CDATA[May create HTML snippets]]></en>
+        </locale>
+        <locale name="permission.quiqqer.html-snippets.delete">
+            <de><![CDATA[Darf HTML Snippets loeschen]]></de>
+            <en><![CDATA[May delete HTML snippets]]></en>
+        </locale>
+        <locale name="permission.quiqqer.html-snippets.update">
+            <de><![CDATA[Darf HTML Snippets bearbeiten]]></de>
+            <en><![CDATA[May edit HTML snippets]]></en>
+        </locale>
     </groups>
 
     <groups name="quiqqer/html-snippets" datatype="js">
