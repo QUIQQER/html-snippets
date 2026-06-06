@@ -94,7 +94,7 @@ class Snippets
      * Retrieves the list of items associated with the given project.
      *
      * @param Project $Project The project object.
-     * @return array The list of items associated with the project.
+     * @return array<array<string, mixed>> The list of items associated with the project.
      * @throws Exception
      */
     public static function getList(Project $Project): array
@@ -112,7 +112,14 @@ class Snippets
      *
      * @param Project $Project The project object.
      * @param string $name The name of the snippet.
-     * @return array The data of the specified snippet.
+     * @return array{
+     *     name: string,
+     *     project: string,
+     *     event: string,
+     *     snippet: string,
+     *     gdpr?: string|null,
+     *     active?: int|string|bool|null
+     * } The data of the specified snippet.
      *
      * @throws QUI\Exception Throws an exception if the snippet is not found.
      */

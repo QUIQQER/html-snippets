@@ -7,6 +7,9 @@ use QUI\Smarty\Collector;
 
 class EventHandler
 {
+    /**
+     * @var array<string, list<array<string, mixed>>>|null
+     */
     protected static array|null $events = null;
 
     public static function onQuiqqerInit(): void

@@ -2,7 +2,7 @@
 
 use QUI\HtmlSnippets\Snippets;
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_html-snippets_ajax_backend_saveSnippet',
     function ($projectName, $snippetName, $eventName, $snippet, $gdpr) {
         $Project = QUI::getProject($projectName);

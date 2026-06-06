@@ -16,14 +16,20 @@ use function base64_encode;
  */
 class SnippetTemplateEvent
 {
+    /**
+     * @var list<array{snippet: string, active?: mixed, gdpr?: string}>
+     */
     protected array $snippets;
 
+    /**
+     * @param list<array{snippet: string, active?: mixed, gdpr?: string}> $snippets
+     */
     public function __construct(array $snippets)
     {
         $this->snippets = $snippets;
     }
 
-    public function onFireEvent(...$args): void
+    public function onFireEvent(mixed ...$args): void
     {
         $args = array_values($args);
 
