@@ -2,7 +2,7 @@
 
 use QUI\HtmlSnippets\Snippets;
 
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_html-snippets_ajax_backend_deactivateSnippet',
     function ($projectName, $snippetName) {
         $Project = QUI::getProject($projectName);
