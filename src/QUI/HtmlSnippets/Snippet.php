@@ -70,7 +70,14 @@ class Snippet
      * Converts the object to an array representation.
      * The array representation includes the name, event, project, and snippet properties.
      *
-     * @return array The object properties as an associative array.
+     * @return array{
+     *     name: string,
+     *     event: string,
+     *     Project: string,
+     *     snippet: string,
+     *     gdpr: string,
+     *     active: 0|1
+     * } The object properties as an associative array.
      */
     public function toArray(): array
     {
