@@ -26,7 +26,7 @@ Installation
 Install the package with Composer:
 
 ```shell
-composer require quiqqer/html-snippets
+./console composer require quiqqer/html-snippets
 ```
 
 Configuration
