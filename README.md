@@ -23,7 +23,24 @@ Features
 Installation
 ------------
 
-The package name is: quiqqer/html-snippets
+Install the package with Composer:
+
+```shell
+composer require quiqqer/html-snippets
+```
+
+Configuration
+-------------
+
+Open the project settings in the QUIQQER administration and select **HTML Snippets**. Each snippet has a unique name,
+a QUIQQER template event, its HTML content, an active state, and an optional GDPR category.
+
+Usage
+-----
+
+Create a snippet, select the template event where it should be inserted, enter the HTML, and activate it. When the
+optional `quiqqer/gdpr` package is installed and a GDPR category is selected, the snippet is inserted only after the
+corresponding consent is available.
 
 Contribution
 ----------
