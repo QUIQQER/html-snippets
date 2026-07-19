@@ -18,23 +18,31 @@ class EventHandler
             return;
         }
 
-        $snippets = QUI::getDatabase()->fetch([
-            'from' => Snippets::table()
-        ]);
+        $snippets = QUI::getQueryBuilder()
+            ->select('*')
+            ->from(QUI\Utils\Doctrine::quoteIdentifier(Snippets::table()))
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        self::$events = [];
 
         // load event snippets
         foreach ($snippets as $snippet) {
-            if (empty($snippet['event'])) {
+            $event = (string)($snippet['event'] ?? '');
+
+            if ($event === '') {
                 continue;
             }
 
-            self::$events[$snippet['event']][] = $snippet;
+            self::$events[$event][] = [
+                'snippet' => (string)($snippet['snippet'] ?? ''),
+                'active' => $snippet['active'] ?? 0,
+                'gdpr' => (string)($snippet['gdpr'] ?? '')
+            ];
         }
 
-        if (is_iterable(self::$events)) {
-            foreach (self::$events as $event => $snippet) {
-                QUI::getEvents()->addEvent($event, [new SnippetTemplateEvent($snippet), 'onFireEvent']);
-            }
+        foreach (self::$events as $event => $snippet) {
+            QUI::getEvents()->addEvent($event, [new SnippetTemplateEvent($snippet), 'onFireEvent']);
         }
     }
 

@@ -44,12 +44,15 @@ class Snippets
             throw new QUI\Exception('Please enter an event');
         }
 
-        QUI::getDatabase()->insert(self::table(), [
-            'name' => $name,
-            'project' => $Project->getName(),
-            'event' => $eventName,
-            'snippet' => $snippet
-        ]);
+        QUI::getDataBaseConnection()->insert(
+            QUI\Utils\Doctrine::quoteIdentifier(self::table()),
+            [
+                'name' => $name,
+                'project' => $Project->getName(),
+                'event' => $eventName,
+                'snippet' => $snippet
+            ]
+        );
 
         return self::get($Project, $name);
     }
@@ -70,10 +73,13 @@ class Snippets
     ): void {
         QUI\Permissions\Permission::checkPermission('quiqqer.html-snippets.create', $User);
 
-        QUI::getDatabase()->delete(self::table(), [
-            'name' => $name,
-            'project' => $Project->getName()
-        ]);
+        QUI::getDataBaseConnection()->delete(
+            QUI\Utils\Doctrine::quoteIdentifier(self::table()),
+            [
+                'name' => $name,
+                'project' => $Project->getName()
+            ]
+        );
     }
 
     /**
@@ -99,12 +105,16 @@ class Snippets
      */
     public static function getList(Project $Project): array
     {
-        return QUI::getDatabase()->fetch([
-            'from' => self::table(),
-            'where' => [
-                'project' => $Project->getName()
-            ]
-        ]);
+        $QueryBuilder = QUI::getQueryBuilder();
+
+        /** @var array<array<string, mixed>> */
+        return $QueryBuilder
+            ->select('*')
+            ->from(QUI\Utils\Doctrine::quoteIdentifier(self::table()))
+            ->where($QueryBuilder->expr()->eq('project', ':project'))
+            ->setParameter('project', $Project->getName())
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     /**
@@ -125,16 +135,29 @@ class Snippets
      */
     public static function getSnippetData(Project $Project, string $name): array
     {
-        $result = QUI::getDatabase()->fetch([
-            'from' => self::table(),
-            'where' => [
-                'name' => $name,
-                'project' => $Project->getName()
-            ]
-        ]);
+        $QueryBuilder = QUI::getQueryBuilder();
+        $result = $QueryBuilder
+            ->select('*')
+            ->from(QUI\Utils\Doctrine::quoteIdentifier(self::table()))
+            ->where($QueryBuilder->expr()->eq('name', ':name'))
+            ->andWhere($QueryBuilder->expr()->eq('project', ':project'))
+            ->setParameter('name', $name)
+            ->setParameter('project', $Project->getName())
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
 
-        if (isset($result[0])) {
-            return $result[0];
+        if ($result !== false) {
+            /** @var array{
+             *     name: string,
+             *     project: string,
+             *     event: string,
+             *     snippet: string,
+             *     gdpr?: string|null,
+             *     active?: int|string|bool|null
+             * } $result
+             */
+            return $result;
         }
 
         throw new QUI\Exception('Snippet not found', 404);
