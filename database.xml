@@ -2,12 +2,12 @@
 <database>
     <global>
         <table name="html_snippets">
-            <field type="INT(1) DEFAULT 0">active</field>
-            <field type="VARCHAR(255)">name</field>
-            <field type="VARCHAR(64)">project</field>
-            <field type="VARCHAR(255)">event</field>
-            <field type="LONGTEXT NULL">snippet</field>
-            <field type="VARCHAR(64) NULL">gdpr</field>
+            <field type="boolean" default="0">active</field>
+            <field type="string" length="255">name</field>
+            <field type="string" length="64">project</field>
+            <field type="string" length="255">event</field>
+            <field type="text" nullable="true" default="null">snippet</field>
+            <field type="string" length="64" nullable="true" default="null">gdpr</field>
 
             <primary>name,project</primary>
             <index>event</index>

@@ -7,6 +7,10 @@ use QUI\Smarty\Collector;
 
 use function array_values;
 use function base64_encode;
+use function htmlspecialchars;
+
+use const ENT_QUOTES;
+use const ENT_SUBSTITUTE;
 
 /**
  * Class SnippetEvent
@@ -66,14 +70,18 @@ class SnippetTemplateEvent
                 continue;
             }
 
-            $gdprIsInstalled = QUI::getPackageManager()->isInstalled('quiqqer/gdpr');
+            $gdprIsInstalled = $this->isGdprInstalled();
 
             if (empty($snippet['gdpr']) || !$gdprIsInstalled) {
                 $Collector->append($snippet['snippet']);
                 continue;
             }
 
-            $snippetGdprCategory = $snippet['gdpr'];
+            $snippetGdprCategory = htmlspecialchars(
+                $snippet['gdpr'],
+                ENT_QUOTES | ENT_SUBSTITUTE,
+                'UTF-8'
+            );
             $snippetContentEncoded = base64_encode($snippet['snippet']);
 
             $snippetHtml = <<<EOF
@@ -87,5 +95,10 @@ EOF;
 
             $Collector->append($snippetHtml);
         }
+    }
+
+    protected function isGdprInstalled(): bool
+    {
+        return QUI::getPackageManager()->isInstalled('quiqqer/gdpr');
     }
 }

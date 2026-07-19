@@ -1,23 +1,37 @@
 {
   "name": "quiqqer/html-snippets",
-  "type": "quiqqer-plugin",
+  "type": "quiqqer-module",
   "description": "The HTML Snippets module in QUIQQER allows you to quickly and efficiently insert HTML snippets",
+  "homepage": "https://www.quiqqer.com",
   "license": [
-    "PCSG QL-1.0",
-    "CC BY-NC-SA 4.0"
+    "proprietary",
+    "CC-BY-NC-SA-4.0"
   ],
-  "authors": [],
+  "authors": [
+    {
+      "name": "PCSG - Computer & Internet Service OHG",
+      "email": "info@quiqqer.com",
+      "homepage": "https://www.quiqqer.com",
+      "role": "Maintainer"
+    }
+  ],
   "support": {
     "email": "support@pcsg.de",
-    "url": "https://www.pcsg.de"
+    "issues": "https://dev.quiqqer.com/quiqqer/html-snippets/issues",
+    "source": "https://dev.quiqqer.com/quiqqer/html-snippets"
   },
   "require": {
-    "php": "^8",
+    "php": "^8.2",
     "quiqqer/core": "^2"
   },
   "autoload": {
     "psr-4": {
       "QUI\\HtmlSnippets\\": "src/QUI/HtmlSnippets"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "QUITests\\HtmlSnippets\\": "tests/QUITests/HtmlSnippets"
     }
   },
   "scripts": {
@@ -42,8 +56,8 @@
       "which composer > /dev/null || (echo 'Error: composer has to be globally installed'; exit 1)",
       "which phive > /dev/null || (echo 'Error: PHIVE has to be globally installed'; exit 1)"
     ],
-    "dev:init:tools": "phive install",
-    "dev:init:git-hooks": "./tools/captainhook install --only-enabled"
+    "dev:init:tools": "phive install --temporary",
+    "dev:init:git-hooks": "./tools/captainhook install --only-enabled --force"
   },
   "scripts-aliases": {
     "test": [
