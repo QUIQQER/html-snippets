@@ -163,8 +163,8 @@ class Snippet
 
         QUI\Permissions\Permission::checkPermission('quiqqer.html-snippets.update', $User);
 
-        QUI::getDatabase()->update(
-            Snippets::table(),
+        QUI::getDataBaseConnection()->update(
+            QUI\Utils\Doctrine::quoteIdentifier(Snippets::table()),
             [
                 'active' => $this->active ? 1 : 0,
                 'event' => $this->event,
