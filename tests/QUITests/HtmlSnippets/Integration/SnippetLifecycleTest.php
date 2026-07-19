@@ -18,6 +18,7 @@ class SnippetLifecycleTest extends TestCase
 
     private Project $Project;
     private string $projectName;
+    private ?string $userUuid = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -42,6 +43,14 @@ class SnippetLifecycleTest extends TestCase
     {
         self::deleteProjectFixtures($this->projectName);
         self::resetEventCache();
+
+        if ($this->userUuid !== null) {
+            try {
+                QUI::getUsers()->deleteUser($this->userUuid);
+            } catch (Throwable) {
+                // Cleanup must not hide the actual PHPUnit result.
+            }
+        }
 
         parent::tearDown();
     }
@@ -132,6 +141,61 @@ class SnippetLifecycleTest extends TestCase
         $this->expectException(QUI\Exception::class);
         $this->expectExceptionMessage('Please enter an event');
         Snippets::create($this->Project, 'missing-event', '', '', $SystemUser);
+    }
+
+    public function testDeleteUsesTheDedicatedDeletePermission(): void
+    {
+        $SystemUser = QUI::getUsers()->getSystemUser();
+        $username = self::PROJECT_PREFIX . 'delete-user-' . bin2hex(random_bytes(6));
+
+        try {
+            $User = QUI::getUsers()->createChildWithAttributes(
+                [
+                    'username' => $username,
+                    'email' => $username . '@example.invalid',
+                    'firstname' => 'Snippet',
+                    'lastname' => 'Delete Permission'
+                ],
+                $SystemUser
+            );
+            $this->userUuid = $User->getUUID();
+
+            QUI::getPermissionManager()->setPermissions(
+                $User,
+                [
+                    'quiqqer.html-snippets.create' => 0,
+                    'quiqqer.html-snippets.delete' => 1,
+                    'quiqqer.html-snippets.update' => 0
+                ],
+                $SystemUser
+            );
+        } catch (Throwable $Exception) {
+            self::markTestSkipped('No permission user fixture is available: ' . $Exception->getMessage());
+        }
+
+        self::insertFixture([
+            'name' => 'delete-permission',
+            'project' => $this->projectName,
+            'event' => 'event-delete',
+            'snippet' => 'delete me',
+            'active' => 0,
+            'gdpr' => null
+        ]);
+
+        Snippets::delete($this->Project, 'delete-permission', $User);
+
+        $QueryBuilder = QUI::getQueryBuilder();
+        $storedName = $QueryBuilder
+            ->select('name')
+            ->from(QUI\Utils\Doctrine::quoteIdentifier(Snippets::table()))
+            ->where($QueryBuilder->expr()->eq('name', ':name'))
+            ->andWhere($QueryBuilder->expr()->eq('project', ':project'))
+            ->setParameter('name', 'delete-permission')
+            ->setParameter('project', $this->projectName)
+            ->executeQuery()
+            ->fetchOne();
+
+        self::assertFalse($storedName);
     }
 
     public function testEventHandlerRegistersStoredSnippetsAndTemplateAssets(): void

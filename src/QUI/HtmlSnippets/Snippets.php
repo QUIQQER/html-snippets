@@ -71,7 +71,7 @@ class Snippets
         string $name,
         null|QUI\Interfaces\Users\User $User = null
     ): void {
-        QUI\Permissions\Permission::checkPermission('quiqqer.html-snippets.create', $User);
+        QUI\Permissions\Permission::checkPermission('quiqqer.html-snippets.delete', $User);
 
         QUI::getDataBaseConnection()->delete(
             QUI\Utils\Doctrine::quoteIdentifier(self::table()),
