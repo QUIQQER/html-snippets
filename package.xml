@@ -9,6 +9,15 @@
             <locale group="quiqqer/html-snippets" var="package.description"/>
         </description>
 
+        <capabilities schemaVersion="1">
+            <capability id="content.html-snippet-management">
+                <title>HTML snippet management</title>
+                <description>
+                    Creates, manages, and publishes project-specific HTML snippets at selectable template events with optional consent-aware delivery.
+                </description>
+            </capability>
+        </capabilities>
+
         <image src="URL_OPT_DIR/quiqqer/html-snippets/bin/Logo.png"/>
 
         <preview>
